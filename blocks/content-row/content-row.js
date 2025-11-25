@@ -1,3 +1,53 @@
+/**
+ * Fallback content when API fails
+ */
+function getFallbackContent() {
+  return [
+    {
+      id: 1,
+      title: 'Stranger Things',
+      image: 'https://via.placeholder.com/500x750/e50914/ffffff?text=Stranger+Things',
+      rating: 'TV-14',
+      year: 2016,
+    },
+    {
+      id: 2,
+      title: 'The Crown',
+      image: 'https://via.placeholder.com/500x750/b20710/ffffff?text=The+Crown',
+      rating: 'TV-MA',
+      year: 2016,
+    },
+    {
+      id: 3,
+      title: 'Wednesday',
+      image: 'https://via.placeholder.com/500x750/e50914/ffffff?text=Wednesday',
+      rating: 'TV-14',
+      year: 2022,
+    },
+    {
+      id: 4,
+      title: 'Ozark',
+      image: 'https://via.placeholder.com/500x750/b20710/ffffff?text=Ozark',
+      rating: 'TV-MA',
+      year: 2017,
+    },
+    {
+      id: 5,
+      title: 'The Witcher',
+      image: 'https://via.placeholder.com/500x750/e50914/ffffff?text=The+Witcher',
+      rating: 'TV-MA',
+      year: 2019,
+    },
+    {
+      id: 6,
+      title: 'Money Heist',
+      image: 'https://via.placeholder.com/500x750/b20710/ffffff?text=Money+Heist',
+      rating: 'TV-MA',
+      year: 2017,
+    },
+  ];
+}
+
 export default async function decorate(block) {
   // Import TMDb service
   const { default: TMDbService } = await import('../../scripts/tmdb-api.js');
@@ -59,7 +109,7 @@ export default async function decorate(block) {
   slider.innerHTML = '';
 
   // Create content items
-  content.forEach(item => {
+  content.forEach((item) => {
     const contentItem = document.createElement('div');
     contentItem.className = 'content-item';
 
@@ -106,14 +156,14 @@ export default async function decorate(block) {
   prevButton.addEventListener('click', () => {
     slider.scrollBy({
       left: -scrollAmount,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   });
 
   nextButton.addEventListener('click', () => {
     slider.scrollBy({
       left: scrollAmount,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   });
 
@@ -127,61 +177,11 @@ export default async function decorate(block) {
   function updateNavButtons() {
     const isAtStart = slider.scrollLeft <= 0;
     const isAtEnd = slider.scrollLeft >= slider.scrollWidth - slider.clientWidth;
-    
+
     prevButton.style.opacity = isAtStart ? '0' : '1';
     nextButton.style.opacity = isAtEnd ? '0' : '1';
   }
 
   slider.addEventListener('scroll', updateNavButtons);
   updateNavButtons(); // Initial check
-}
-
-/**
- * Fallback content when API fails
- */
-function getFallbackContent() {
-  return [
-    {
-      id: 1,
-      title: "Stranger Things",
-      image: "https://via.placeholder.com/500x750/e50914/ffffff?text=Stranger+Things",
-      rating: "TV-14",
-      year: 2016
-    },
-    {
-      id: 2,
-      title: "The Crown",
-      image: "https://via.placeholder.com/500x750/b20710/ffffff?text=The+Crown",
-      rating: "TV-MA",
-      year: 2016
-    },
-    {
-      id: 3,
-      title: "Wednesday",
-      image: "https://via.placeholder.com/500x750/e50914/ffffff?text=Wednesday",
-      rating: "TV-14",
-      year: 2022
-    },
-    {
-      id: 4,
-      title: "Ozark",
-      image: "https://via.placeholder.com/500x750/b20710/ffffff?text=Ozark",
-      rating: "TV-MA",
-      year: 2017
-    },
-    {
-      id: 5,
-      title: "The Witcher",
-      image: "https://via.placeholder.com/500x750/e50914/ffffff?text=The+Witcher",
-      rating: "TV-MA",
-      year: 2019
-    },
-    {
-      id: 6,
-      title: "Money Heist",
-      image: "https://via.placeholder.com/500x750/b20710/ffffff?text=Money+Heist",
-      rating: "TV-MA",
-      year: 2017
-    }
-  ];
 }
