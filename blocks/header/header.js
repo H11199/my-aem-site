@@ -1,8 +1,56 @@
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
-
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
+
+/**
+ * Toggles all nav sections
+ * @param {Element} sections The container element
+ * @param {Boolean} expanded Whether the element should be expanded or collapsed
+ */
+function toggleAllNavSections(sections, expanded = false) {
+  sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
+    section.setAttribute('aria-expanded', expanded);
+  });
+}
+
+/**
+ * Toggles the entire nav
+ * @param {Element} nav The container element
+ * @param {Element} navSections The nav sections within the container element
+ * @param {*} forceExpanded Optional param to force nav expand behavior when not null
+ */
+function toggleMenu(nav, navSections, forceExpanded = null) {
+  const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
+  const button = nav.querySelector('.nav-hamburger button');
+  document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
+  nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+  toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
+  button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
+
+  // enable nav dropdown keyboard accessibility
+  const navDrops = navSections.querySelectorAll('.nav-drop');
+  if (isDesktop.matches) {
+    navDrops.forEach((drop) => {
+      if (!drop.hasAttribute('tabindex')) {
+        drop.setAttribute('tabindex', 0);
+        drop.addEventListener('focus', focusNavSection);
+      }
+    });
+  } else {
+    navDrops.forEach((drop) => {
+      drop.removeAttribute('tabindex');
+      drop.removeEventListener('focus', focusNavSection);
+    });
+  }
+
+  // enable menu collapse on escape keypress
+  if (!expanded || isDesktop.matches) {
+    window.addEventListener('keydown', closeOnEscape);
+    nav.addEventListener('focusout', closeOnFocusLost);
+  } else {
+    window.removeEventListener('keydown', closeOnEscape);
+    nav.removeEventListener('focusout', closeOnFocusLost);
+  }
+}
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
@@ -47,68 +95,17 @@ function focusNavSection() {
 }
 
 /**
- * Toggles all nav sections
- * @param {Element} sections The container element
- * @param {Boolean} expanded Whether the element should be expanded or collapsed
- */
-function toggleAllNavSections(sections, expanded = false) {
-  sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
-    section.setAttribute('aria-expanded', expanded);
-  });
-}
-
-/**
- * Toggles the entire nav
- * @param {Element} nav The container element
- * @param {Element} navSections The nav sections within the container element
- * @param {*} forceExpanded Optional param to force nav expand behavior when not null
- */
-function toggleMenu(nav, navSections, forceExpanded = null) {
-  const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
-  const button = nav.querySelector('.nav-hamburger button');
-  document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
-  nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-  toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
-  button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
-  
-  // enable nav dropdown keyboard accessibility
-  const navDrops = navSections.querySelectorAll('.nav-drop');
-  if (isDesktop.matches) {
-    navDrops.forEach((drop) => {
-      if (!drop.hasAttribute('tabindex')) {
-        drop.setAttribute('tabindex', 0);
-        drop.addEventListener('focus', focusNavSection);
-      }
-    });
-  } else {
-    navDrops.forEach((drop) => {
-      drop.removeAttribute('tabindex');
-      drop.removeEventListener('focus', focusNavSection);
-    });
-  }
-
-  // enable menu collapse on escape keypress
-  if (!expanded || isDesktop.matches) {
-    window.addEventListener('keydown', closeOnEscape);
-    nav.addEventListener('focusout', closeOnFocusLost);
-  } else {
-    window.removeEventListener('keydown', closeOnEscape);
-    nav.removeEventListener('focusout', closeOnFocusLost);
-  }
-}
-
-/**
  * Creates Netflix-style navigation structure
  */
 function createNetflixNav() {
   const nav = document.createElement('nav');
   nav.id = 'nav';
-  
+
   // Create brand section
   const navBrand = document.createElement('div');
   navBrand.className = 'nav-brand';
   navBrand.innerHTML = '<a href="/">ADOBEFLIX</a>';
-  
+
   // Create navigation sections
   const navSections = document.createElement('div');
   navSections.className = 'nav-sections';
@@ -124,7 +121,7 @@ function createNetflixNav() {
       </ul>
     </div>
   `;
-  
+
   // Create tools section
   const navTools = document.createElement('div');
   navTools.className = 'nav-tools';
@@ -139,11 +136,11 @@ function createNetflixNav() {
       <div class="profile-avatar">U</div>
     </div>
   `;
-  
+
   // Add scroll effect for header background
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
-  
+
   // Handle scroll effect
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
@@ -152,7 +149,7 @@ function createNetflixNav() {
       navWrapper.classList.remove('scrolled');
     }
   });
-  
+
   // Hamburger for mobile
   const hamburger = document.createElement('div');
   hamburger.classList.add('nav-hamburger');
@@ -160,11 +157,11 @@ function createNetflixNav() {
       <span class="nav-hamburger-icon"></span>
     </button>`;
   hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-  
+
   // Assemble navigation
   nav.append(hamburger, navBrand, navSections, navTools);
   nav.setAttribute('aria-expanded', 'false');
-  
+
   // Add event listeners for dropdowns
   navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
     if (navSection.querySelector('ul')) {
@@ -178,11 +175,11 @@ function createNetflixNav() {
       });
     }
   });
-  
+
   // Prevent mobile nav behavior on window resize
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
-  
+
   navWrapper.append(nav);
   return navWrapper;
 }
@@ -194,9 +191,8 @@ function createNetflixNav() {
 export default async function decorate(block) {
   // Clear existing content
   block.textContent = '';
-  
+
   // Force use of ADOBEFLIX navigation (temporarily disable fragment loading)
-  console.log('Using ADOBEFLIX navigation');
   const netflixNav = createNetflixNav();
   block.append(netflixNav);
 }

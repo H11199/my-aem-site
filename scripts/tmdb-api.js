@@ -27,6 +27,7 @@ class TMDbService {
       const data = await response.json();
       return data;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('TMDb API Error:', error);
       return this.getFallbackData();
     }
@@ -92,7 +93,7 @@ class TMDbService {
    * Format API results to our component structure
    */
   formatResults(results) {
-    return results.slice(0, 20).map(item => ({
+    return results.slice(0, 20).map((item) => ({
       id: item.id,
       title: item.title || item.name,
       image: item.poster_path ? `${this.imageBaseUrl}${item.poster_path}` : this.getPlaceholderImage(),
@@ -100,7 +101,7 @@ class TMDbService {
       rating: this.formatRating(item.vote_average),
       year: this.extractYear(item.release_date || item.first_air_date),
       overview: item.overview,
-      genres: item.genre_ids || []
+      genres: item.genre_ids || [],
     }));
   }
 
@@ -116,7 +117,7 @@ class TMDbService {
       rating: this.getContentRating(movie.vote_average),
       year: this.extractYear(movie.release_date),
       duration: movie.runtime ? `${movie.runtime}m` : null,
-      genres: movie.genres ? movie.genres.map(g => g.name).slice(0, 3) : []
+      genres: movie.genres ? movie.genres.map((g) => g.name).slice(0, 3) : [],
     };
   }
 
@@ -132,7 +133,7 @@ class TMDbService {
       rating: this.getContentRating(show.vote_average),
       year: this.extractYear(show.first_air_date),
       duration: show.episode_run_time ? `${show.episode_run_time[0]}m` : null,
-      genres: show.genres ? show.genres.map(g => g.name).slice(0, 3) : []
+      genres: show.genres ? show.genres.map((g) => g.name).slice(0, 3) : [],
     };
   }
 
@@ -178,38 +179,38 @@ class TMDbService {
       results: [
         {
           id: 1,
-          title: "Stranger Things",
-          name: "Stranger Things",
+          title: 'Stranger Things',
+          name: 'Stranger Things',
           poster_path: null,
           backdrop_path: null,
           vote_average: 8.7,
-          release_date: "2016-07-15",
-          first_air_date: "2016-07-15",
-          overview: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl."
+          release_date: '2016-07-15',
+          first_air_date: '2016-07-15',
+          overview: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.',
         },
         {
           id: 2,
-          title: "The Crown",
-          name: "The Crown",
+          title: 'The Crown',
+          name: 'The Crown',
           poster_path: null,
           backdrop_path: null,
           vote_average: 8.5,
-          release_date: "2016-11-04",
-          first_air_date: "2016-11-04",
-          overview: "Follows the political rivalries and romance of Queen Elizabeth II's reign and the events that shaped the second half of the twentieth century."
+          release_date: '2016-11-04',
+          first_air_date: '2016-11-04',
+          overview: 'Follows the political rivalries and romance of Queen Elizabeth II\'s reign and the events that shaped the second half of the twentieth century.',
         },
         {
           id: 3,
-          title: "Wednesday",
-          name: "Wednesday",
+          title: 'Wednesday',
+          name: 'Wednesday',
           poster_path: null,
           backdrop_path: null,
           vote_average: 8.3,
-          release_date: "2022-11-23",
-          first_air_date: "2022-11-23",
-          overview: "Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends — and foes — at Nevermore Academy."
-        }
-      ]
+          release_date: '2022-11-23',
+          first_air_date: '2022-11-23',
+          overview: 'Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends — and foes — at Nevermore Academy.',
+        },
+      ],
     };
   }
 
@@ -234,13 +235,13 @@ class TMDbService {
   getFallbackHeroContent() {
     return {
       id: 66732,
-      title: "Stranger Things",
-      overview: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
-      backdrop: "https://via.placeholder.com/1280x720/141414/ffffff?text=Stranger+Things",
-      rating: "TV-14",
+      title: 'Stranger Things',
+      overview: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.',
+      backdrop: 'https://via.placeholder.com/1280x720/141414/ffffff?text=Stranger+Things',
+      rating: 'TV-14',
       year: 2016,
-      duration: "51m",
-      genres: ["Drama", "Fantasy", "Horror"]
+      duration: '51m',
+      genres: ['Drama', 'Fantasy', 'Horror'],
     };
   }
 }
