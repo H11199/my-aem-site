@@ -11,17 +11,21 @@
  */
 
 :root {
-  /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  /* Netflix colors */
+  --background-color: #141414;
+  --light-color: #2f2f2f;
+  --dark-color: #000000;
+  --text-color: #ffffff;
+  --link-color: #e50914;
+  --link-hover-color: #f40612;
+  --netflix-red: #e50914;
+  --netflix-dark-red: #b20710;
+  --netflix-gray: #564d4d;
+  --netflix-light-gray: #b3b3b3;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --body-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --heading-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -78,6 +82,7 @@ body {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
   line-height: 1.6;
+  padding-top: 68px; /* Account for fixed Netflix header */
 }
 
 body.appear {
@@ -143,7 +148,19 @@ pre {
 }
 
 main > div {
-  margin: 40px 16px;
+  margin: 0;
+  padding: 0;
+}
+
+main > .section {
+  margin: 0;
+  padding: 0;
+}
+
+main > .section > div {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 input,
