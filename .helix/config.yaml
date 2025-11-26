@@ -8,6 +8,6 @@ definitions:
 strains:
   default:
     <<: *defaults
-    code: https://github.com/h11199/my-aem-site.git#main
-    content: https://github.com/h11199/my-aem-site.git#main
-    static: https://github.com/h11199/my-aem-site.git#main/htdocs
+    code: https://github.com/H11199/my-aem-site.git#main
+    content: https://github.com/H11199/my-aem-site.git#main
+    static: https://github.com/H11199/my-aem-site.git#main/htdocs
