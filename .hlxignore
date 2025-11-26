@@ -1,5 +1,6 @@
 .*
-*.md
+# Ignore markdown files in root, but allow content structure
+/content.md
 karma.config.js
 LICENSE
 package.json

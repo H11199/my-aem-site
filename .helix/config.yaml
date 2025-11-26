@@ -1,0 +1,13 @@
+version: 1
+
+definitions:
+  defaults: &defaults
+    - url: https://main--my-aem-site--h11199.aem.live{path}
+      allow: 200
+
+strains:
+  default:
+    <<: *defaults
+    code: https://github.com/h11199/my-aem-site.git#main
+    content: https://github.com/h11199/my-aem-site.git#main
+    static: https://github.com/h11199/my-aem-site.git#main/htdocs
