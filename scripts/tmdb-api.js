@@ -10,6 +10,16 @@ class TMDbService {
     this.baseUrl = 'https://api.themoviedb.org/3';
     this.imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
     this.backdropBaseUrl = 'https://image.tmdb.org/t/p/w1280';
+    
+    // Rating thresholds for content rating classification
+    this.ratingThresholds = {
+      tvMA: 8,
+      tv14: 7,
+      tvPG: 6,
+      contentTvMA: 8.5,
+      contentTv14: 7.5,
+      contentTvPG: 6.5,
+    };
   }
 
   /**
@@ -140,9 +150,9 @@ class TMDbService {
    * Convert TMDb rating to Netflix-style rating
    */
   formatRating(voteAverage) {
-    if (voteAverage >= 8) return 'TV-MA';
-    if (voteAverage >= 7) return 'TV-14';
-    if (voteAverage >= 6) return 'TV-PG';
+    if (voteAverage >= this.ratingThresholds.tvMA) return 'TV-MA';
+    if (voteAverage >= this.ratingThresholds.tv14) return 'TV-14';
+    if (voteAverage >= this.ratingThresholds.tvPG) return 'TV-PG';
     return 'TV-G';
   }
 
@@ -150,9 +160,9 @@ class TMDbService {
    * Get content rating based on vote average
    */
   getContentRating(voteAverage) {
-    if (voteAverage >= 8.5) return 'TV-MA';
-    if (voteAverage >= 7.5) return 'TV-14';
-    if (voteAverage >= 6.5) return 'TV-PG';
+    if (voteAverage >= this.ratingThresholds.contentTvMA) return 'TV-MA';
+    if (voteAverage >= this.ratingThresholds.contentTv14) return 'TV-14';
+    if (voteAverage >= this.ratingThresholds.contentTvPG) return 'TV-PG';
     return 'TV-G';
   }
 
