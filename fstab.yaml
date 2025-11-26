@@ -1,0 +1,2 @@
+mountpoints:
+  /: https://github.com/h11199/my-aem-site.git#main
