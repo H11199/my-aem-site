@@ -13,8 +13,8 @@
 /* eslint-env browser */
 function sampleRUM(checkpoint, data) {
   // eslint-disable-next-line max-len
-  const timeShift = () => (window.performance 
-    ? window.performance.now() 
+  const timeShift = () => (window.performance
+    ? window.performance.now()
     : Date.now() - window.hlx.rum.firstReadTime);
   try {
     window.hlx = window.hlx || {};
@@ -40,7 +40,9 @@ function sampleRUM(checkpoint, data) {
         weight,
         id,
         isSelected,
-        firstReadTime: window.performance ? window.performance.timeOrigin : Date.now(),
+        firstReadTime: window.performance
+          ? window.performance.timeOrigin
+          : Date.now(),
         sampleRUM,
         queue: [],
         collector: (...args) => window.hlx.rum.queue.push(args),

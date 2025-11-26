@@ -19,7 +19,6 @@ class TMDbService {
     try {
       const url = `${this.baseUrl}${endpoint}${endpoint.includes('?') ? '&' : '?'}api_key=${this.apiKey}`;
       const response = await fetch(url);
-      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
