@@ -10,7 +10,6 @@ class TMDbService {
     this.baseUrl = 'https://api.themoviedb.org/3';
     this.imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
     this.backdropBaseUrl = 'https://image.tmdb.org/t/p/w1280';
-    
     // Rating thresholds for content rating classification
     this.ratingThresholds = {
       tvMA: 8,
@@ -20,6 +19,9 @@ class TMDbService {
       contentTv14: 7.5,
       contentTvPG: 6.5,
     };
+    
+    // Current year for fallback when date parsing fails
+    this.currentYear = new Date().getFullYear();
   }
 
   /**
@@ -32,7 +34,6 @@ class TMDbService {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
       const data = await response.json();
       return data;
     } catch (error) {
@@ -170,7 +171,7 @@ class TMDbService {
    * Extract year from date string
    */
   extractYear(dateString) {
-    return dateString ? new Date(dateString).getFullYear() : new Date().getFullYear();
+    return dateString ? new Date(dateString).getFullYear() : this.currentYear;
   }
 
   /**
